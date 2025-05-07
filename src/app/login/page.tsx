@@ -12,7 +12,7 @@ export default async function LoginPage() {
     redirect("/upload");
   }
   return (
-    <main className="min-h-[80svh] flex flex-col items-center justify-center">
+    <main className="min-h-screen flex flex-col items-center justify-center">
       <div className="w-[90%] max-w-md my-14  border border-gray-200 rounded-lg px-4 py-8 text-center space-y-4">
         <div className="flex flex-col gap-3 items-center justify-center">
           <FileText size={30} className="text-blue-600" />

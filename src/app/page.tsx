@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex-1 flex flex-col items-center justify-center p-6 text-center min-h-[80svh]">
+    <main className="flex-1 flex flex-col items-center justify-center p-6 text-center min-h-screen">
       <div className="max-w-3xl mx-auto space-y-6">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
           Welcome to <span className="text-primary">JISEBI</span> Checker

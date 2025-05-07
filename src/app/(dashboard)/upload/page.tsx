@@ -2,8 +2,8 @@ import MainButton from "@/components/buttons/MainButton";
 
 export default async function UploadPage() {
   return (
-    <main className="min-h-[80svh] flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100 px-4">
-      <div className="w-full max-w-xl  border border-gray-200 rounded-2xl p-8">
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      <div className="w-full max-w-xl border border-gray-200 rounded-2xl p-8">
         <div className="space-y-6">
           <h1 className="text-3xl font-bold text-gray-800">
             Upload Manuscript
@@ -28,6 +28,6 @@ export default async function UploadPage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

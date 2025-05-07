@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/layout/Header";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth/options";
 import SessionWrapper from "@/components/session/SessionWrapper";
 import TanstackProvider from "@/components/tanstack/TanstackProvider";
 import { Toaster } from "react-hot-toast";
+import { DashboardProvider } from "@/components/layout/DashboardContext";
 
 export const metadata: Metadata = {
   title: "JISEBI CHECKER",
@@ -25,11 +25,12 @@ export default async function RootLayout({
         className={`bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-800 antialiased text-sm 2xl:text-base min-h-screen`}
       >
         <TanstackProvider>
-          <SessionWrapper session={session}>
-            <Header />
-            {children}
-            <Toaster position="top-right" reverseOrder={false} />
-          </SessionWrapper>
+          <DashboardProvider>
+            <SessionWrapper session={session}>
+              {children}
+              <Toaster position="top-right" reverseOrder={false} />
+            </SessionWrapper>
+          </DashboardProvider>
         </TanstackProvider>
       </body>
     </html>

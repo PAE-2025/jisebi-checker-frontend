@@ -54,7 +54,7 @@ export default function LoginForm() {
         label="Username"
         placeholder="John Doe"
         type="text"
-        defaultValue={"yusufrhmann"}
+        defaultValue={"Yusufrhmann"}
       />
       <Input
         id="password"
