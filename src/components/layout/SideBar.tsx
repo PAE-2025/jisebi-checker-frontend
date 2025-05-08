@@ -12,6 +12,27 @@ export default function SideBar() {
     { name: "skripsi_final.pdf", url: "/uploads/skripsi_final.pdf" },
     { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
     { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
+    {
+      name: "skripsi_finalskripsi_finalskripsi_finalskripsi_finalskripsi_finalskripsi_finalskripsi_final.pdf",
+      url: "/uploads/skripsi_final.pdf",
+    },
+    { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
+    { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
+    { name: "skripsi_final.pdf", url: "/uploads/skripsi_final.pdf" },
+    { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
+    { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
+    { name: "skripsi_final.pdf", url: "/uploads/skripsi_final.pdf" },
+    { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
+    { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
+    { name: "skripsi_final.pdf", url: "/uploads/skripsi_final.pdf" },
+    { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
+    { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
+    { name: "skripsi_final.pdf", url: "/uploads/skripsi_final.pdf" },
+    { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
+    { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
+    { name: "skripsi_final.pdf", url: "/uploads/skripsi_final.pdf" },
+    { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
+    { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
   ];
 
   const handleLogout = () => {
@@ -54,8 +75,8 @@ export default function SideBar() {
                   href={file.url}
                   className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-gray-200 transition-colors break-all"
                 >
-                  <FileText className="w-4 h-4 text-blue-400" />
-                  {file.name}
+                  <FileText size={20} className="text-blue-400 shrink-0" />
+                  <p className="truncate">{file.name}</p>
                 </Link>
               </li>
             ))}
