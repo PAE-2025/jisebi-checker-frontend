@@ -105,9 +105,11 @@ export function Table<T extends object>({
               </th>
             ))}
 
-            <th className="px-4 py-2 text-left font-medium rounded-r-lg w-fit">
-              Actions
-            </th>
+            {(onView || onEdit || onDelete) && (
+              <th className="px-4 py-2 text-left font-medium rounded-r-lg w-fit">
+                Actions
+              </th>
+            )}
           </tr>
         </thead>
 
@@ -133,32 +135,34 @@ export function Table<T extends object>({
                   </td>
                 ))}
 
-                <td className="px-4 py-2 space-x-2 text-gray-800 rounded-r-lg border-y border-r border-gray-200 w-fit">
-                  {onView && (
-                    <button
-                      onClick={() => onView(row)}
-                      className="p-2  hover:bg-blue-400 bg-blue-500 rounded-md transition cursor-pointer"
-                    >
-                      <Eye className="text-blue-100" />
-                    </button>
-                  )}
-                  {onEdit && (
-                    <button
-                      onClick={() => onEdit(row)}
-                      className="p-2 bg-blue-100 hover:bg-blue-200 rounded-md transition cursor-pointer"
-                    >
-                      <Pencil className="text-blue-600" />
-                    </button>
-                  )}
-                  {onDelete && (
-                    <button
-                      onClick={() => onDelete(row)}
-                      className="p-2 bg-red-100 hover:bg-red-200 rounded-md transition cursor-pointer"
-                    >
-                      <Trash2 className="text-red-600" />
-                    </button>
-                  )}
-                </td>
+                {(onView || onEdit || onDelete) && (
+                  <td className="px-4 py-2 space-x-2 text-gray-800 rounded-r-lg border-y border-r border-gray-200 w-fit">
+                    {onView && (
+                      <button
+                        onClick={() => onView(row)}
+                        className="p-2  hover:bg-blue-400 bg-blue-500 rounded-md transition cursor-pointer"
+                      >
+                        <Eye className="text-blue-100" />
+                      </button>
+                    )}
+                    {onEdit && (
+                      <button
+                        onClick={() => onEdit(row)}
+                        className="p-2 bg-blue-100 hover:bg-blue-200 rounded-md transition cursor-pointer"
+                      >
+                        <Pencil className="text-blue-600" />
+                      </button>
+                    )}
+                    {onDelete && (
+                      <button
+                        onClick={() => onDelete(row)}
+                        className="p-2 bg-red-100 hover:bg-red-200 rounded-md transition cursor-pointer"
+                      >
+                        <Trash2 className="text-red-600" />
+                      </button>
+                    )}
+                  </td>
+                )}
               </tr>
             ))
           ) : (

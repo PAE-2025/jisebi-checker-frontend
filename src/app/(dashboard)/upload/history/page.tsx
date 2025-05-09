@@ -41,17 +41,17 @@ const columns: Column<FileItem>[] = [
 ];
 
 export default function FileTablePage() {
-  const handleView = (row: FileItem) => {
-    alert(`View: ${row.link}`);
-  };
+  // const handleView = (row: FileItem) => {
+  //   alert(`View: ${row.link}`);
+  // };
 
-  const handleEdit = (row: FileItem) => {
-    alert(`Edit: ${row.link}`);
-  };
+  // const handleEdit = (row: FileItem) => {
+  //   alert(`Edit: ${row.link}`);
+  // };
 
-  const handleDelete = (row: FileItem) => {
-    alert(`Delete: ${row.link}`);
-  };
+  // const handleDelete = (row: FileItem) => {
+  //   alert(`Delete: ${row.link}`);
+  // };
 
   return (
     <div className="px-16 py-20">
@@ -61,9 +61,9 @@ export default function FileTablePage() {
         data={dummyData}
         currentPage={1}
         rowsPerPage={10}
-        onView={handleView}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+        // onView={handleView}
+        // onEdit={handleEdit}
+        // onDelete={handleDelete}
       />
     </div>
   );
