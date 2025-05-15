@@ -54,7 +54,7 @@ export default function FileTablePage() {
   // };
 
   return (
-    <div className="px-16 py-20">
+    <div className="px-4 py-4 md:px-8 md:py-8 lg:px-12 lg:py-16 xl:px-16 xl:py-20">
       <h1 className="text-xl font-bold mb-4">Riwayat</h1>
       <Table<FileItem>
         columns={columns}

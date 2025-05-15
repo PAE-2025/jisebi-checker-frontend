@@ -1,11 +1,11 @@
 "use client";
 
 import MainButton from "@/components/buttons/MainButton";
-import { useRouter } from "next/navigation";
 import Input from "./Input";
 import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "nextjs-toploader/app";
 
 export default function LoginForm() {
   const router = useRouter();

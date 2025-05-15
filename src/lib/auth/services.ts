@@ -8,7 +8,7 @@ export const login = async (
   try {
     console.log(username);
     const response = await axios.post(
-      process.env.BACKEND_URL + "/auth/login",
+      process.env.AUTH_SERVICE + "/auth/login",
       { username, password },
       { headers: { "Content-Type": "application/json" } }
     );

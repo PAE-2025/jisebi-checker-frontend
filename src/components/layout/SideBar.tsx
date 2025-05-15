@@ -4,9 +4,11 @@ import { useDashboard } from "./DashboardContext";
 import { FileText, LogOut, X } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { useTopLoader } from "nextjs-toploader";
 
 export default function SideBar() {
   const { isSidebarOpen, closeSidebar } = useDashboard();
+  const loader = useTopLoader();
 
   const uploadedFiles = [
     { name: "skripsi_final.pdf", url: "/uploads/skripsi_final.pdf" },
@@ -35,8 +37,10 @@ export default function SideBar() {
     { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
   ];
 
-  const handleLogout = () => {
-    signOut();
+  const handleLogout = async () => {
+    loader.start();
+    await signOut();
+    loader.done();
   };
 
   return (

@@ -1,5 +1,4 @@
-import Input from "@/components/auth/Input";
-import MainButton from "@/components/buttons/MainButton";
+import UploadForm from "@/features/document_processing/components/UploadForm";
 
 export default async function UploadPage() {
   return (
@@ -12,49 +11,7 @@ export default async function UploadPage() {
           <p className="text-gray-600 text-sm sm:text-base text-center sm:text-left">
             Upload your manuscript for checking and receive the processed file.
           </p>
-          <form className="space-y-4">
-            <Input
-              id="title"
-              label="Title"
-              placeholder="Title"
-              type="text"
-              className="px-2"
-            />
-            <div className="flex gap-2">
-              <Input
-                id="author"
-                label="Author 1"
-                placeholder="author 1"
-                type="text"
-                className="px-2"
-              />
-              <Input
-                id="author"
-                label="Author 2"
-                placeholder="author 2"
-                type="text"
-                className="px-2"
-              />
-              <Input
-                id="author"
-                label="Author 3"
-                placeholder="author 3"
-                type="text"
-                className="px-2"
-              />
-            </div>
-            <input
-              type="file"
-              className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4
-              file:rounded-md file:border-0
-              file:bg-blue-100 file:text-blue-700
-              hover:file:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
-              transition-all duration-200 ease-in-out"
-            />
-            <MainButton className="w-full" type="submit">
-              Check
-            </MainButton>
-          </form>
+          <UploadForm />
         </div>
       </div>
     </div>
