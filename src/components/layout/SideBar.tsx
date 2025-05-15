@@ -51,7 +51,7 @@ export default function SideBar() {
       >
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-4 bg-white border-b border-gray-200">
-          <Link href="/">
+          <Link href="/upload">
             <div className="flex items-center gap-2 font-semibold text-gray-700 text-base">
               <FileText className="text-blue-600" />
               JISEBI Checker
@@ -67,7 +67,15 @@ export default function SideBar() {
 
         {/* File List */}
         <nav className="flex-1 overflow-y-auto px-3 py-2">
-          <p className="text-xs text-gray-500 mb-2 px-2">Riwayat Upload</p>
+          <div className="flex justify-between items-baseline">
+            <p className="text-xs text-gray-500 mb-2 px-2">Riwayat Upload</p>
+            <Link
+              href={"/upload/history"}
+              className="text-xs text-blue-500 hover:text-blue-400 mb-2 px-2"
+            >
+              View All
+            </Link>
+          </div>
           <ul className="space-y-1">
             {uploadedFiles.map((file, index) => (
               <li key={index}>
