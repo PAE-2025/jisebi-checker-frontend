@@ -6,18 +6,21 @@ export interface UploadHistoryQueryParams {
   limit?: number;
 }
 
-export const uploadFile = async (payload: UploadPayload): Promise<UploadResponse> => {
+export const uploadFile = async (
+  payload: UploadPayload
+): Promise<UploadResponse> => {
   try {
     const res = await api.post<UploadResponse>(`/api/upload`, payload, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
+    console.log(res.data);
     return res.data;
   } catch (error: any) {
     console.error("UPLOAD File ERROR:", error);
     throw new Error(
-      error?.response?.message || "Gagal mengunggah dokumen."
+      error?.response?.data?.detail || "Gagal mengunggah dokumen."
     );
   }
 };
@@ -33,7 +36,7 @@ export const getUploadHistory = async (
   } catch (error: any) {
     console.error("GET UPLOAD HISTORY ERROR:", error);
     throw new Error(
-      error?.response?.message || "Gagal mengambil riwayat upload."
+      error?.response?.data?.detail || "Gagal mengambil riwayat upload."
     );
   }
 };
@@ -46,6 +49,8 @@ export const downloadReport = async (taskId: string): Promise<Blob> => {
     return res.data;
   } catch (error: any) {
     console.error("DOWNLOAD REPORT ERROR:", error);
-    throw new Error(error?.response?.message || "Gagal mengunduh laporan.");
+    throw new Error(
+      error?.response?.data?.detail || "Gagal mengunduh laporan."
+    );
   }
 };
