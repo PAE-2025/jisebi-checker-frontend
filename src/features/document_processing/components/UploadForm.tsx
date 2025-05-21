@@ -21,9 +21,9 @@ export default function UploadForm() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const title = formData.get("title");
-    const author1 = formData.get("author1");
-    const author2 = formData.get("author2");
-    const author3 = formData.get("author3");
+    const firstName = formData.get("firstName");
+    const lastName = formData.get("lastName");
+
     const file = formData.get("file");
 
     if (!file || (file instanceof File && file.size === 0)) {
@@ -44,23 +44,16 @@ export default function UploadForm() {
       />
       <div className="space-y-4 sm:flex gap-2">
         <Input
-          id="author1"
-          label="Author 1"
-          placeholder="author 1"
+          id="firstName"
+          label="First Name"
+          placeholder="First name"
           type="text"
           className="px-2"
         />
         <Input
-          id="author2"
-          label="Author 2"
-          placeholder="author 2"
-          type="text"
-          className="px-2"
-        />
-        <Input
-          id="author3"
-          label="Author 3"
-          placeholder="author 3"
+          id="lastName"
+          label="Last Name"
+          placeholder="Last name"
           type="text"
           className="px-2"
         />
@@ -69,7 +62,7 @@ export default function UploadForm() {
         id="file"
         name="file"
         type="file"
-        required
+        accept=".docx"
         className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4
           file:rounded-md file:border-0 file:bg-blue-100 file:text-blue-700
           hover:file:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50

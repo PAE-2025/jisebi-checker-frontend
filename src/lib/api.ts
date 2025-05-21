@@ -6,6 +6,7 @@ const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE,
   headers: {
     "Content-Type": "multipart/form-data",
+    Accept: "*",
   },
 });
 

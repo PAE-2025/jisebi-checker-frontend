@@ -84,8 +84,17 @@ export function Table<T extends object>({
               No
             </th>
 
-            {columns.map((column) => (
-              <th key={String(column.key)} className="text-left font-medium">
+            {columns.map((column, i) => (
+              <th
+                key={String(column.key)}
+                className={`text-left font-medium ${
+                  !onView &&
+                  !onEdit &&
+                  !onDelete &&
+                  i === columns.length - 1 &&
+                  "rounded-r-lg"
+                }`}
+              >
                 <button
                   className={`px-4 py-2 ${
                     column.sortable ? "cursor-pointer" : "cursor-default"
@@ -124,10 +133,16 @@ export function Table<T extends object>({
                   {(currentPage - 1) * rowsPerPage + rowIndex + 1}
                 </td>
 
-                {columns.map((column) => (
+                {columns.map((column, i) => (
                   <td
                     key={String(column.key)}
-                    className="px-4 py-2 text-gray-800 border-y border-gray-200"
+                    className={`px-4 py-2 text-gray-800 border-y border-gray-200  ${
+                      !onView &&
+                      !onEdit &&
+                      !onDelete &&
+                      i === columns.length - 1 &&
+                      "rounded-r-lg border-r"
+                    }`}
                   >
                     {column.render
                       ? column.render(row[column.key], row)

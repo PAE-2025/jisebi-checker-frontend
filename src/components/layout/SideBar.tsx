@@ -1,41 +1,24 @@
 "use client";
 
+import { useDocumentProcessingService } from "@/features/document_processing/hooks/useService";
 import { useDashboard } from "./DashboardContext";
 import { FileText, LogOut, X } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useTopLoader } from "nextjs-toploader";
+import { UploadHistoryItem } from "@/features/document_processing/types";
 
 export default function SideBar() {
   const { isSidebarOpen, closeSidebar } = useDashboard();
   const loader = useTopLoader();
 
-  const uploadedFiles = [
-    { name: "skripsi_final.pdf", url: "/uploads/skripsi_final.pdf" },
-    { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
-    { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
-    {
-      name: "skripsi_finalskripsi_finalskripsi_finalskripsi_finalskripsi_finalskripsi_finalskripsi_final.pdf",
-      url: "/uploads/skripsi_final.pdf",
-    },
-    { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
-    { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
-    { name: "skripsi_final.pdf", url: "/uploads/skripsi_final.pdf" },
-    { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
-    { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
-    { name: "skripsi_final.pdf", url: "/uploads/skripsi_final.pdf" },
-    { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
-    { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
-    { name: "skripsi_final.pdf", url: "/uploads/skripsi_final.pdf" },
-    { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
-    { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
-    { name: "skripsi_final.pdf", url: "/uploads/skripsi_final.pdf" },
-    { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
-    { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
-    { name: "skripsi_final.pdf", url: "/uploads/skripsi_final.pdf" },
-    { name: "bab1.pdf", url: "/uploads/bab1.pdf" },
-    { name: "proposal.pdf", url: "/uploads/proposal.pdf" },
-  ];
+  const {
+    isLoadingUploadHistory: isLoading,
+    uploadHistory: data,
+    uploadHistoryError: error,
+  } = useDocumentProcessingService({ queryParams: { limit: 10 } });
+
+  const uploadedFiles: UploadHistoryItem[] = data?.data || [];
 
   const handleLogout = async () => {
     loader.start();
@@ -80,19 +63,41 @@ export default function SideBar() {
               View All
             </Link>
           </div>
-          <ul className="space-y-1">
-            {uploadedFiles.map((file, index) => (
-              <li key={index}>
-                <Link
-                  href={file.url}
-                  className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-gray-200 transition-colors break-all"
-                >
-                  <FileText size={20} className="text-blue-400 shrink-0" />
-                  <p className="truncate">{file.name}</p>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {isLoading ? (
+            <p className="text-sm text-gray-500 px-2">Memuat data...</p>
+          ) : error ? (
+            <p className="text-sm text-red-500 px-2">Gagal memuat data</p>
+          ) : uploadedFiles.length === 0 ? (
+            <p className="text-sm text-gray-500 px-2">Belum ada file</p>
+          ) : (
+            <ul className="space-y-1">
+              {uploadedFiles.map((file) => (
+                <li key={file.task_id}>
+                  <Link
+                    href={`/download/${file.task_id}`}
+                    className="flex flex-col px-3 py-2 rounded-md hover:bg-gray-200 transition-colors break-all"
+                  >
+                    <div className="flex items-center gap-2 text-sm">
+                      <FileText size={20} className="text-blue-400 shrink-0" />
+                      <p className="truncate">{file.title || "Tanpa Judul"}</p>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      Status:{" "}
+                      <span
+                        className={`font-medium ${
+                          file.status === "processed"
+                            ? "text-green-600"
+                            : "text-yellow-600"
+                        }`}
+                      >
+                        {file.status === "processed" ? "Selesai" : "Menunggu"}
+                      </span>
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </nav>
 
         {/* Footer with Logout */}
@@ -109,10 +114,11 @@ export default function SideBar() {
           </p>
         </div>
       </aside>
-      {/* Backdrop overlay untuk klik di luar sidebar */}
+
+      {/* Backdrop overlay */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0  z-30 lg:hidden bg-black opacity-20"
+          className="fixed inset-0 z-30 lg:hidden bg-black opacity-20"
           onClick={closeSidebar}
         />
       )}

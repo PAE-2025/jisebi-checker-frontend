@@ -31,7 +31,7 @@ export default async function RootLayout({
           <DashboardProvider>
             <SessionWrapper session={session}>
               {children}
-              <Toaster position="top-right" reverseOrder={false} />
+              <Toaster position="bottom-right" reverseOrder={false} />
             </SessionWrapper>
           </DashboardProvider>
         </TanstackProvider>

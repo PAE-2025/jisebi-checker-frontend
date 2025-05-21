@@ -1,70 +1,75 @@
 "use client";
 import { Column, Table } from "@/components/table/Table";
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import {
+  UploadHistoryItem,
+  UploadHistoryResponse,
+} from "@/features/document_processing/types";
+import { useDocumentProcessingService } from "@/features/document_processing/hooks/useService";
 
-type FileItem = {
-  link: string;
-  author: string;
-  tanggal: string;
-};
-
-const dummyData: FileItem[] = [
+const columns: Column<UploadHistoryItem>[] = [
   {
-    link: "https://example.com/file1.pdf",
-    author: "John Doe",
-    tanggal: "2025-05-08",
-  },
-  {
-    link: "https://example.com/file2.pdf",
-    author: "Jane Smith",
-    tanggal: "2025-05-07",
-  },
-];
-
-const columns: Column<FileItem>[] = [
-  {
-    key: "link",
+    key: "task_id",
     label: "File",
-    render: (value: string) => (
+    render: (task_id: string) => (
       <a
-        href={value}
+        href={`/download/${task_id}`}
         target="_blank"
         rel="noopener noreferrer"
         className="text-blue-600 underline"
       >
-        Abc.pdf
+        Lihat File
       </a>
     ),
   },
-  { key: "author", label: "Author" },
-  { key: "tanggal", label: "Tanggal Upload" },
+  { key: "authors", label: "Author" },
+  {
+    key: "created_at",
+    label: "Tanggal Upload",
+    render: (created_at: string) =>
+      new Date(created_at).toLocaleDateString("id-ID"),
+  },
+  {
+    key: "status",
+    label: "Status",
+    render: (status: "queued" | "processed") => (
+      <span
+        className={`px-2 py-1 rounded text-white text-xs ${
+          status === "processed" ? "bg-green-500" : "bg-yellow-500"
+        }`}
+      >
+        {status}
+      </span>
+    ),
+  },
 ];
 
 export default function FileTablePage() {
-  // const handleView = (row: FileItem) => {
-  //   alert(`View: ${row.link}`);
-  // };
+  const queryParams = {};
+  const {
+    isLoadingUploadHistory: isLoading,
+    uploadHistory: data,
+    uploadHistoryError: error,
+  } = useDocumentProcessingService({ queryParams: queryParams });
 
-  // const handleEdit = (row: FileItem) => {
-  //   alert(`Edit: ${row.link}`);
-  // };
-
-  // const handleDelete = (row: FileItem) => {
-  //   alert(`Delete: ${row.link}`);
-  // };
+  const fileData = data?.data;
 
   return (
     <div className="px-4 py-4 md:px-8 md:py-8 lg:px-12 lg:py-16 xl:px-16 xl:py-20">
       <h1 className="text-xl font-bold mb-4">Riwayat</h1>
-      <Table<FileItem>
-        columns={columns}
-        data={dummyData}
-        currentPage={1}
-        rowsPerPage={10}
-        // onView={handleView}
-        // onEdit={handleEdit}
-        // onDelete={handleDelete}
-      />
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="text-red-500">Gagal memuat data</p>
+      ) : (
+        <Table<UploadHistoryItem>
+          columns={columns}
+          data={fileData}
+          currentPage={1}
+          rowsPerPage={10}
+        />
+      )}
     </div>
   );
 }
