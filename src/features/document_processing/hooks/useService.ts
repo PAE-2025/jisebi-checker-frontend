@@ -3,9 +3,15 @@ import {
   downloadReport,
   getUploadHistory,
   uploadFile,
+  processFile, // 🆕 Tambahkan ini
   UploadHistoryQueryParams,
 } from "../service/service";
-import { UploadHistoryResponse, UploadPayload, UploadResponse } from "../types";
+import {
+  UploadHistoryResponse,
+  UploadPayload,
+  UploadResponse,
+  ProcessDocumentResponse,
+} from "../types";
 
 export const useDocumentProcessingService = ({
   queryParams,
@@ -43,6 +49,20 @@ export const useDocumentProcessingService = ({
     mutationFn: uploadFile,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["uploadHistory"] });
+      queryClient.refetchQueries({ queryKey: ["uploadHistory"] });
+    },
+  });
+
+  // 🆕 Mutation: Process File
+  const processFileMutation = useMutation<
+    ProcessDocumentResponse,
+    Error,
+    string
+  >({
+    mutationFn: (taskId: string) => processFile(taskId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["uploadHistory"] });
+      queryClient.refetchQueries({ queryKey: ["uploadHistory"] });
     },
   });
 
@@ -59,8 +79,14 @@ export const useDocumentProcessingService = ({
     uploadHistoryError: uploadHistoryQuery.error,
 
     // Download
-    downloadResult: downloadReportQuery.data,
+    downloadResult: downloadReportQuery,
     isLoadingDownload: downloadReportQuery.isLoading,
     downloadError: downloadReportQuery.error,
+
+    // 🆕 Process
+    processFile: processFileMutation.mutate,
+    processFileAsync: processFileMutation.mutateAsync,
+    isProcessing: processFileMutation.isPending,
+    processError: processFileMutation.error,
   };
 };

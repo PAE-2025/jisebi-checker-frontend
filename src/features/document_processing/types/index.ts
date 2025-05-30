@@ -4,11 +4,23 @@ export type UploadPayload = {
   // title: string;
   file: File;
 };
-
 export type UploadResponse = {
-  task_id: string;
-  status: "queued" | "processed";
-  success: boolean;
+  status: boolean;
+  data: {
+    user_id: string;
+    task_id: string;
+    title: string;
+    authors: {
+      text: string;
+      first_author: {
+        first_name: string;
+        last_name: string;
+      };
+    };
+    status: "awaiting" | "queued" | "processed";
+    url: string;
+    success: boolean;
+  };
 };
 
 export type UploadHistoryItem = {
@@ -24,4 +36,8 @@ export type UploadHistoryItem = {
 export type UploadHistoryResponse = {
   status: boolean;
   data: UploadHistoryItem[];
+};
+
+export type ProcessDocumentResponse = {
+  status: boolean;
 };

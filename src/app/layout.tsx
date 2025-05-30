@@ -26,6 +26,7 @@ export default async function RootLayout({
       <body
         className={`bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-800 antialiased text-sm 2xl:text-base min-h-screen`}
       >
+        <div id="modal"></div>
         <NextTopLoader />
         <TanstackProvider>
           <DashboardProvider>

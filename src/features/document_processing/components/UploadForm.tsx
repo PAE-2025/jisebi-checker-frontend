@@ -4,73 +4,120 @@ import MainButton from "@/components/buttons/MainButton";
 import { useDocumentProcessingService } from "../hooks/useService";
 import toast from "react-hot-toast";
 import { UploadPayload } from "../types";
+import ConfirmationModal from "./ConfirmationModal";
+import { useState } from "react";
 
 // components/forms/UploadForm.tsx
 export default function UploadForm() {
   const { isUploading, uploadFileAsync } = useDocumentProcessingService({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
+  const [taskId, setTaskId] = useState<string | null>(null);
 
-  const uploadFile = async (data: UploadPayload) => {
+  const [formData, setFormData] = useState<{
+    title?: string;
+    firstName?: string;
+    lastName?: string;
+  }>({});
+
+  const { processFileAsync, isProcessing, processError } =
+    useDocumentProcessingService();
+
+  const processFile = async (taskId: string) => {
     try {
-      await uploadFileAsync(data);
-      toast.success("FIle berhasil diUpload!");
+      const result = await processFileAsync(taskId);
+      setIsModalOpen(false);
+      toast.success("File berhasil masuk antrian!");
+    } catch (err: any) {
+      toast.error(`Gagal memproses: ${err.message}`);
+    }
+  };
+
+  const uploadFile = async (data: UploadPayload, formMeta: any) => {
+    try {
+      const result = await uploadFileAsync(data); // <-- pastikan return-nya punya `url`
+      if (result?.data.url) {
+        setUploadedFileUrl(result.data.url);
+        setTaskId(result.data.task_id);
+        setFormData(formMeta);
+        setIsModalOpen(true);
+      }
+      toast.success("File berhasil diUpload!");
     } catch (err: any) {
       toast.error(`Gagal mengupload: ${err.message}`);
     }
   };
+
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const title = formData.get("title");
-    const firstName = formData.get("firstName");
-    const lastName = formData.get("lastName");
-
+    const title = formData.get("title") as string;
+    const firstName = formData.get("firstName") as string;
+    const lastName = formData.get("lastName") as string;
     const file = formData.get("file");
 
     if (!file || (file instanceof File && file.size === 0)) {
       toast.error("File Wajib diisi.");
       return;
     }
-    uploadFile({ file: file as File });
+
+    uploadFile({ file: file as File }, { title, firstName, lastName });
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <Input
-        id="title"
-        label="Title"
-        placeholder="Title"
-        type="text"
-        className="px-2"
-      />
-      <div className="space-y-4 sm:flex gap-2">
+    <>
+      {isModalOpen && uploadedFileUrl && (
+        <ConfirmationModal
+          title={formData.title}
+          firstName={formData.firstName}
+          lastName={formData.lastName}
+          docxUrl={uploadedFileUrl}
+          isProcessing={isProcessing} // atau state loading
+          onClose={() => setIsModalOpen(false)}
+          onClick={async () => {
+            await processFile(taskId ?? "");
+          }}
+        />
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
         <Input
-          id="firstName"
-          label="First Name"
-          placeholder="First name"
+          id="title"
+          label="Title"
+          placeholder="Title"
           type="text"
           className="px-2"
         />
-        <Input
-          id="lastName"
-          label="Last Name"
-          placeholder="Last name"
-          type="text"
-          className="px-2"
-        />
-      </div>
-      <input
-        id="file"
-        name="file"
-        type="file"
-        accept=".docx"
-        className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4
+        <div className="space-y-4 sm:flex gap-2">
+          <Input
+            id="firstName"
+            label="First Name"
+            placeholder="First name"
+            type="text"
+            className="px-2"
+          />
+          <Input
+            id="lastName"
+            label="Last Name"
+            placeholder="Last name"
+            type="text"
+            className="px-2"
+          />
+        </div>
+        <input
+          id="file"
+          name="file"
+          type="file"
+          accept=".docx"
+          className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4
           file:rounded-md file:border-0 file:bg-blue-100 file:text-blue-700
           hover:file:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
           transition-all duration-200 ease-in-out"
-      />
-      <MainButton disabled={isUploading} className="w-full" type="submit">
-        Check
-      </MainButton>
-    </form>
+        />
+        <MainButton disabled={isUploading} className="w-full" type="submit">
+          Check
+        </MainButton>
+      </form>
+    </>
   );
 }
