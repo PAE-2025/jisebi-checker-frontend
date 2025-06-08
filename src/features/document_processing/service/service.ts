@@ -31,7 +31,7 @@ export const uploadFile = async (
 };
 
 export const processFile = async (
-  taskId: String
+  taskId: string
 ): Promise<ProcessDocumentResponse> => {
   try {
     const res = await api.put<ProcessDocumentResponse>(
