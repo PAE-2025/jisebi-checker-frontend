@@ -6,7 +6,6 @@ export const login = async (
   password: string
 ): Promise<LoginResponse> => {
   try {
-    console.log(username);
     const response = await axios.post(
       process.env.AUTH_SERVICE + "/auth/login",
       { username, password },

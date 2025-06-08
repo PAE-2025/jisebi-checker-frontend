@@ -28,6 +28,7 @@ export const authOptions: NextAuthOptions = {
             accessToken: result.data.accessToken,
             refreshToken: result.data.refreshToken,
             expireAt: result.data.expireAt,
+            isAdmin: result.data.isAdmin, // pastikan field ini ada di response
           };
         } catch (err: any) {
           throw new Error(err.message);
@@ -41,6 +42,7 @@ export const authOptions: NextAuthOptions = {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
         token.expireAt = user.expireAt;
+        token.isAdmin = user.isAdmin;
       }
 
       // Jika token sudah expired, hapus token dan tambahkan error
@@ -50,6 +52,7 @@ export const authOptions: NextAuthOptions = {
           accessToken: null,
           refreshToken: null,
           expireAt: null,
+          isAdmin: null,
           error: "TokenExpired",
         };
       }
@@ -62,6 +65,7 @@ export const authOptions: NextAuthOptions = {
         accessToken: token.accessToken,
         refreshToken: token.refreshToken,
         expireAt: token.expireAt,
+        isAdmin: token.isAdmin,
       };
       if (token?.error) {
         session.error = token.error;

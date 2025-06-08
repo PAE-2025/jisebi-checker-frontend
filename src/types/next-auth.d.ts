@@ -6,6 +6,7 @@ declare module "next-auth" {
       accessToken: string;
       refreshToken: string;
       expireAt: string;
+      isAdmin: boolean;
     };
     error: string;
   }

@@ -5,5 +5,6 @@ interface LoginResponse {
     accessToken: string;
     refreshToken: string;
     expireAt: number;
+    isAdmin: boolean;
   };
 }
