@@ -1,4 +1,4 @@
-import api from "@/lib/api";
+import { createApi } from "@/lib/api";
 import {
   ProcessDocumentResponse,
   UploadHistoryResponse,
@@ -10,6 +10,9 @@ export interface UploadHistoryQueryParams {
   status?: "queued" | "processed";
   limit?: number;
 }
+const api = await createApi(
+  process.env.NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE ?? ""
+);
 
 export const uploadFile = async (
   payload: UploadPayload

@@ -1,24 +1,30 @@
 "use client";
 
-import { useDocumentProcessingService } from "@/features/document_processing/hooks/useService";
 import { useDashboard } from "./DashboardContext";
-import { FileText, LogOut, X } from "lucide-react";
+import {
+  FilePlus2,
+  FileText,
+  HistoryIcon,
+  LogOut,
+  User,
+  X,
+} from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useTopLoader } from "nextjs-toploader";
-import { UploadHistoryItem } from "@/features/document_processing/types";
+import { usePathname } from "next/navigation";
 
 export default function SideBar() {
   const { isSidebarOpen, closeSidebar } = useDashboard();
   const loader = useTopLoader();
+  const pathname = usePathname();
 
-  const {
-    isLoadingUploadHistory: isLoading,
-    uploadHistory: data,
-    uploadHistoryError: error,
-  } = useDocumentProcessingService({ queryParams: { limit: 10 } });
-
-  const uploadedFiles: UploadHistoryItem[] = data?.data || [];
+  const linkClasses = (href: string, exact = false) => {
+    const isActive = exact ? pathname === href : pathname.startsWith(href);
+    return `text-md mb-2 flex items-center gap-2 px-4 py-2 rounded-sm ${
+      isActive ? "bg-blue-100 text-blue-600" : "text-blue-600 hover:bg-blue-50"
+    }`;
+  };
 
   const handleLogout = async () => {
     loader.start();
@@ -54,50 +60,21 @@ export default function SideBar() {
 
         {/* File List */}
         <nav className="flex-1 overflow-y-auto px-3 py-2">
-          <div className="flex justify-between items-baseline">
-            <p className="text-xs text-gray-500 mb-2 px-2">Riwayat Upload</p>
-            <Link
-              href={"/upload/history"}
-              className="text-xs text-blue-500 hover:text-blue-400 mb-2 px-2"
-            >
-              View All
-            </Link>
-          </div>
-          {isLoading ? (
-            <p className="text-sm text-gray-500 px-2">Memuat data...</p>
-          ) : error ? (
-            <p className="text-sm text-red-500 px-2">Gagal memuat data</p>
-          ) : uploadedFiles.length === 0 ? (
-            <p className="text-sm text-gray-500 px-2">Belum ada file</p>
-          ) : (
-            <ul className="space-y-1">
-              {uploadedFiles.map((file) => (
-                <li key={file.task_id}>
-                  <Link
-                    href={`/download/${file.task_id}`}
-                    className="flex flex-col px-3 py-2 rounded-md hover:bg-gray-200 transition-colors break-all"
-                  >
-                    <div className="flex items-center gap-2 text-sm">
-                      <FileText size={20} className="text-blue-400 shrink-0" />
-                      <p className="truncate">{file.title || "Tanpa Judul"}</p>
-                    </div>
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      Status:{" "}
-                      <span
-                        className={`font-medium ${
-                          file.status === "processed"
-                            ? "text-green-600"
-                            : "text-yellow-600"
-                        }`}
-                      >
-                        {file.status === "processed" ? "Selesai" : "Menunggu"}
-                      </span>
-                    </p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
+          <Link href="/upload" className={linkClasses("/upload", true)}>
+            <FilePlus2 size={18} />
+            <p>Upload New File</p>
+          </Link>
+          <Link
+            href="/upload/history"
+            className={linkClasses("/upload/history")}
+          >
+            <HistoryIcon size={18} />
+            <p>Riwayat Upload</p>
+          </Link>
+          <Link href="/user" className={linkClasses("/user")}>
+            <User size={18} />
+            <p>Manage User</p>
+          </Link>
         </nav>
 
         {/* Footer with Logout */}

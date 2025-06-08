@@ -42,6 +42,18 @@ export const authOptions: NextAuthOptions = {
         token.refreshToken = user.refreshToken;
         token.expireAt = user.expireAt;
       }
+
+      // Jika token sudah expired, hapus token dan tambahkan error
+      if (Date.now() > token.expireAt * 1000) {
+        return {
+          ...token,
+          accessToken: null,
+          refreshToken: null,
+          expireAt: null,
+          error: "TokenExpired",
+        };
+      }
+
       return token;
     },
     async session({ session, token }: any) {

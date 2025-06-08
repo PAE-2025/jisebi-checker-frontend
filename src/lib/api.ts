@@ -2,24 +2,23 @@
 import axios from "axios";
 import { getSession } from "next-auth/react";
 
-const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE,
-  headers: {
-    "Content-Type": "multipart/form-data",
-    Accept: "*",
-  },
-});
-
-// Interceptor untuk menambahkan access_token ke setiap request
-api.interceptors.request.use(async (config) => {
+export const createApi = async (baseUrl: string) => {
   const session = await getSession();
-  console.log("INI SESSION API");
-  console.log(session);
-  if (session?.user.accessToken) {
-    config.headers.Authorization = `Bearer ${session.user.accessToken}`;
-  }
 
-  return config;
-});
+  const instance = axios.create({
+    baseURL: baseUrl,
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Accept: "*",
+    },
+  });
 
-export default api;
+  instance.interceptors.request.use((config) => {
+    if (session?.user.accessToken) {
+      config.headers.Authorization = `Bearer ${session.user.accessToken}`;
+    }
+    return config;
+  });
+
+  return instance;
+};

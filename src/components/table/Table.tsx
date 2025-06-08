@@ -1,9 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import MainButton from "../buttons/MainButton";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 
 export type Column<T> = {
   key: keyof T;
