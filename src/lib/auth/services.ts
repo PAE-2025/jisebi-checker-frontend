@@ -7,7 +7,7 @@ export const login = async (
 ): Promise<LoginResponse> => {
   try {
     const response = await axios.post(
-      process.env.AUTH_SERVICE + "/auth/login",
+      process.env.NEXT_PUBLIC_AUTH_SERVICE + "/api/auth/login",
       { username, password },
       { headers: { "Content-Type": "application/json" } }
     );
