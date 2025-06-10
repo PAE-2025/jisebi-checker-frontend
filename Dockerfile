@@ -1,6 +1,9 @@
 # Use an official Node.js image
 FROM node:20
 
+ARG NEXT_PUBLIC_AUTH_SERVICE
+ARG NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE
+
 # Set the working directory
 WORKDIR /app
 
@@ -12,8 +15,8 @@ RUN npm install --frozen-lockfile
 COPY . .
 
 # Set environment variables dynamically at runtime
-RUN echo "NEXT_PUBLIC_AUTH_SERVICE=$NEXT_PUBLIC_AUTH_SERVICE" >> /app/.env && \
-    echo "NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE=$NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE" >> /app/.env
+RUN echo "NEXT_PUBLIC_AUTH_SERVICE=${NEXT_PUBLIC_AUTH_SERVICE}" >> /app/.env && \
+    echo "NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE=${NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE}" >> /app/.env
 
 # Build the Next.js project
 RUN npm run build
