@@ -2,6 +2,7 @@
 FROM node:20
 
 # Echo the variable into a .env file
+RUN mkdir /app
 RUN echo "NEXT_PUBLIC_AUTH_SERVICE=$NEXT_PUBLIC_AUTH_SERVICE" > /app/.env && \
     echo "NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE=$NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE" >> /app/.env \
 
