@@ -21,12 +21,6 @@ RUN npm run build
 # Expose the port Next.js runs on
 EXPOSE 3000
 
-# Use an entrypoint script to set environment variables properly
-RUN echo '#!/bin/sh' > /app/init.sh && \
-    echo 'echo "NEXT_PUBLIC_AUTH_SERVICE=$NEXT_PUBLIC_AUTH_SERVICE" >> /app/.env' >> /app/init.sh && \
-    echo 'echo "NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE=$NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE" >> /app/.env' >> /app/init.sh && \
-    chmod +x /app/init.sh
-
 # Start the Next.js server with the entrypoint script
-CMD ["/bin/sh", "/app/init.sh", "&&", "npm", "start"]
+CMD ["npm", "start"]
 
