@@ -1,6 +1,10 @@
 # Use an official Node.js image
 FROM node:20
 
+# Echo the variable into a .env file
+RUN echo "NEXT_PUBLIC_AUTH_SERVICE=$NEXT_PUBLIC_AUTH_SERVICE" > /app/.env && \
+    echo "NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE=$NEXT_PUBLIC_DOCUMENT_PROCESSING_SERVICE" >> /app/.env \
+
 # Set the working directory
 WORKDIR /app
 
