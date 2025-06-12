@@ -57,7 +57,14 @@ export default function FileTablePage() {
         </button>
       ),
     },
-    { key: "authors", label: "Author" },
+    { key: "title", label: "Title" },
+    { 
+      key: "authors", 
+      label: "Author",
+      render: (authors: string) => (
+        authors.split(",")[0].trim().replace(/\s\d+\)$/, "")
+      )
+    },
     {
       key: "created_at",
       label: "Tanggal Upload",

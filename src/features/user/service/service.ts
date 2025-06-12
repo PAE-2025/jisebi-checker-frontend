@@ -33,7 +33,7 @@ export const getUsers = async (
     limit: params.limit || 10,
   });
   try {
-    const res = await api.get<UserListResponse>(`/users`, {
+    const res = await api.get<UserListResponse>(`/api/users`, {
       params: cleanedParams,
     });
     return res.data;
@@ -50,7 +50,7 @@ export const createUser = async (
   payload: CreateUserPayload
 ): Promise<UserMutationResponse> => {
   try {
-    const res = await api.post(`/users`, payload, {
+    const res = await api.post(`/api/users`, payload, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -67,7 +67,7 @@ export const createUser = async (
 // GET /api/users/:id – Get user detail
 export const getUser = async (id: string): Promise<UserDetailResponse> => {
   try {
-    const res = await api.get<UserDetailResponse>(`/users/${id}`);
+    const res = await api.get<UserDetailResponse>(`/api/users/${id}`);
     return res.data;
   } catch (error: any) {
     console.error("GET USER ERROR:", error?.response?.data);
@@ -90,7 +90,7 @@ export const updateUser = async ({
   });
   console.log(cleanedPayload);
   try {
-    const res = await api.put(`/users/${id}`, cleanedPayload, {
+    const res = await api.put(`/api/users/${id}`, cleanedPayload, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -107,7 +107,7 @@ export const updateUser = async ({
 // DELETE /api/users/:id – Delete user
 export const deleteUser = async (id: string): Promise<DeleteUserResponse> => {
   try {
-    const res = await api.delete(`/users/${id}`);
+    const res = await api.delete(`/api/users/${id}`);
     return res.data;
   } catch (error: any) {
     console.error("DELETE USER ERROR:", error?.response?.data);
