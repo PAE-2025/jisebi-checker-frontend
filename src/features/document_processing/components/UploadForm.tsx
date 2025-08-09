@@ -3,7 +3,7 @@ import Input from "@/components/auth/Input";
 import MainButton from "@/components/buttons/MainButton";
 import { useDocumentProcessingService } from "../hooks/useService";
 import toast from "react-hot-toast";
-import { UploadPayload } from "../types";
+import { ProcessDocumentParams, UploadPayload } from "../types";
 import ConfirmationModal from "./ConfirmationModal";
 import { useState } from "react";
 
@@ -20,12 +20,18 @@ export default function UploadForm() {
     lastName?: string;
   }>({});
 
+  const [returnedFormData, setReturnedFormData] = useState<{
+    title?: string;
+    firstName?: string;
+    lastName?: string;
+  }>({});
+
   const { processFileAsync, isProcessing, processError } =
     useDocumentProcessingService();
 
-  const processFile = async (taskId: string) => {
+  const processFile = async (params: ProcessDocumentParams) => {
     try {
-      const result = await processFileAsync(taskId);
+      const result = await processFileAsync(params);
       setIsModalOpen(false);
       toast.success("File berhasil masuk antrian!");
     } catch (err: any) {
@@ -37,6 +43,11 @@ export default function UploadForm() {
     try {
       const result = await uploadFileAsync(data); // <-- pastikan return-nya punya `url`
       if (result?.data.url) {
+        setReturnedFormData({
+          title: result.data.title,
+          firstName: result.data.authors.first_author.first_name,
+          lastName: result.data.authors.first_author.last_name,
+        });
         setUploadedFileUrl(result.data.url);
         setTaskId(result.data.task_id);
         setFormData(formMeta);
@@ -68,41 +79,25 @@ export default function UploadForm() {
     <>
       {isModalOpen && uploadedFileUrl && (
         <ConfirmationModal
-          title={formData.title}
-          firstName={formData.firstName}
-          lastName={formData.lastName}
+          defaultTitle={returnedFormData.title}
+          defaultFirstName={returnedFormData.firstName}
+          defaultLastName={returnedFormData.lastName}
           docxUrl={uploadedFileUrl}
+          taskId={taskId!}
           isProcessing={isProcessing} // atau state loading
           onClose={() => setIsModalOpen(false)}
-          onClick={async () => {
-            await processFile(taskId ?? "");
+          onClick={() => { 
+            setIsModalOpen(false)
+            toast.success("File berhasil diproses! Cek histori anda")
+            ; 
           }}
         />
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <Input
-          id="title"
-          label="Title"
-          placeholder="Title"
-          type="text"
-          className="px-2"
-        />
+       
         <div className="space-y-4 sm:flex gap-2">
-          <Input
-            id="firstName"
-            label="First Name"
-            placeholder="First name"
-            type="text"
-            className="px-2"
-          />
-          <Input
-            id="lastName"
-            label="Last Name"
-            placeholder="Last name"
-            type="text"
-            className="px-2"
-          />
+          
         </div>
         <input
           id="file"

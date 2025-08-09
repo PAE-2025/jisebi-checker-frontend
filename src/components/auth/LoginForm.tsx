@@ -54,14 +54,14 @@ export default function LoginForm() {
         label="Username"
         placeholder="John Doe"
         type="text"
-        defaultValue={"Yusufrhmann"}
+        defaultValue={""}
       />
       <Input
         id="password"
         label="Password"
         placeholder="Password"
         type="password"
-        defaultValue={"Indonesia123"}
+        defaultValue={""}
       />
       <MainButton
         className="w-full mt-2"

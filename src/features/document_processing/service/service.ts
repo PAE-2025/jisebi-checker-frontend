@@ -1,5 +1,7 @@
 import { createApi } from "@/lib/api";
 import {
+  ProcessDocumentParams,
+  ProcessDocumentPayload,
   ProcessDocumentResponse,
   UploadHistoryResponse,
   UploadPayload,
@@ -33,12 +35,11 @@ export const uploadFile = async (
   }
 };
 
-export const processFile = async (
-  taskId: string
-): Promise<ProcessDocumentResponse> => {
+export const processFile = async (payload: ProcessDocumentParams): Promise<ProcessDocumentResponse> => {
   try {
     const res = await api.put<ProcessDocumentResponse>(
-      `/api/upload/${taskId}`,
+      `/api/upload/${payload.taskId}`,
+      payload.body,
       {
         headers: {
           "Content-Type": "application/json",

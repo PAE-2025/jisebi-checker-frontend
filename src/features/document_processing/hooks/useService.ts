@@ -11,6 +11,8 @@ import {
   UploadPayload,
   UploadResponse,
   ProcessDocumentResponse,
+  ProcessDocumentPayload,
+  ProcessDocumentParams,
 } from "../types";
 
 export const useDocumentProcessingService = ({
@@ -57,9 +59,10 @@ export const useDocumentProcessingService = ({
   const processFileMutation = useMutation<
     ProcessDocumentResponse,
     Error,
+    ProcessDocumentParams,
     string
   >({
-    mutationFn: (taskId: string) => processFile(taskId),
+    mutationFn: processFile,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["uploadHistory"] });
       queryClient.refetchQueries({ queryKey: ["uploadHistory"] });

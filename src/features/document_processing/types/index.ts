@@ -41,3 +41,13 @@ export type UploadHistoryResponse = {
 export type ProcessDocumentResponse = {
   status: boolean;
 };
+
+export type ProcessDocumentPayload = {
+  title?: string;
+  firstName?: string;
+  lastName?: string;
+};
+export type ProcessDocumentParams = {
+  taskId: string;
+  body: ProcessDocumentPayload;
+}

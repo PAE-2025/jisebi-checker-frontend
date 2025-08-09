@@ -1,26 +1,58 @@
 import MainButton from "@/components/buttons/MainButton";
 import Modal from "@/components/modal/Modal";
 import { Loader2 } from "lucide-react";
+import { processFile } from "../service/service";
+import { useState } from "react";
+import { ProcessDocumentParams } from "../types";
+import Input from "@/components/auth/Input";
 
 type ConfirmationModalProps = {
-  title?: string;
-  firstName?: string;
-  lastName?: string;
+  defaultTitle?: string;
+  defaultFirstName?: string;
+  defaultLastName?: string;
   docxUrl?: string;
+  taskId?: string | null;
   isProcessing?: boolean;
   onClose: () => void;
   onClick: () => void;
 };
 
 export default function ConfirmationModal({
-  title = "Confirmation",
-  firstName,
-  lastName,
   docxUrl,
+  defaultTitle,
+  defaultFirstName,
+  defaultLastName,
+  taskId = null,
   isProcessing = false,
   onClose,
   onClick,
 }: ConfirmationModalProps) {
+
+  const [title, setTitle] = useState(defaultTitle || "");
+  const [firstName, setFirstName] = useState(defaultFirstName || "");
+  const [lastName, setLastName] = useState(defaultLastName || "");
+
+  async function startProcessFile (): Promise<void> { 
+    await processFile({
+      taskId: taskId!,
+      body: {
+        title: title,
+        firstName: firstName,
+        lastName: lastName,
+      },
+    } || { 
+      taskId: "", 
+      body: {
+        title: "",
+        firstName: "",
+        lastName: "",
+      } 
+    });
+    
+    onClick();
+    // <-- pastikan `taskId` tidak null
+  }
+
   return (
     <Modal
       onClose={onClose}
@@ -32,15 +64,19 @@ export default function ConfirmationModal({
 
       <div className="space-y-4 mb-6">
         <p className="text-md text-gray-800 font-medium">
-          Title: <strong className="text-blue-600">{title || " -"}</strong>
+          Title
+          <Input placeholder={defaultTitle} onChange={(e) => setTitle(e.target.value)} defaultValue={defaultTitle}>
+          </Input> 
         </p>
         <p className="text-md text-gray-800 font-medium">
-          First Name:{" "}
-          <strong className="text-blue-600">{firstName || " -"}</strong>
+          First Name
+          <Input placeholder={defaultFirstName} onChange={(e) => setFirstName(e.target.value)} defaultValue={defaultFirstName}>
+          </Input>  
         </p>
         <p className="text-md text-gray-800 font-medium">
-          Last Name:{" "}
-          <strong className="text-blue-600">{lastName || " -"}</strong>
+          Last Name
+          <Input placeholder={defaultLastName} onChange={(e) => setLastName(e.target.value)} defaultValue={defaultLastName}>
+          </Input>   
         </p>
       </div>
 
@@ -76,7 +112,7 @@ export default function ConfirmationModal({
           Cancel
         </button>
         <MainButton
-          onClick={onClick}
+          onClick={startProcessFile}
           disabled={isProcessing}
           className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
