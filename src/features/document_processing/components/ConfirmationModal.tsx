@@ -33,21 +33,25 @@ export default function ConfirmationModal({
   const [lastName, setLastName] = useState(defaultLastName || "");
 
   async function startProcessFile (): Promise<void> { 
-    await processFile({
-      taskId: taskId!,
-      body: {
-        title: title,
-        firstName: firstName,
-        lastName: lastName,
-      },
-    } || { 
-      taskId: "", 
-      body: {
-        title: "",
-        firstName: "",
-        lastName: "",
-      } 
-    });
+    processFile(
+      taskId
+        ? {
+            taskId,
+            body: {
+              title,
+              firstName,
+              lastName,
+            },
+          }
+        : {
+            taskId: "",
+            body: {
+              title: "",
+              firstName: "",
+              lastName: "",
+            },
+          }
+    );
     
     onClick();
     // <-- pastikan `taskId` tidak null
